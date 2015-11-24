@@ -206,7 +206,7 @@ bs3u.Uploader.prototype._configureUploader = function(settings) {
   uploader.settings.useWebWorkers           = settings.useWebWorkers || false;
 
   // The following settings are not necessary unless you're using web workers:
-  
+
   // The path where the the worker file is located.
   uploader.settings.workerFilePath          = settings.workerFilePath || "/basic_s3_worker.js";
   // The path where this file is located. This is needed because the worker imports this file.
@@ -1491,7 +1491,8 @@ bs3u.Uploader.prototype._sha256 = function(value) {
 
 bs3u.Uploader.prototype._defaultHost = function() {
   var uploader = this;
-  return uploader.settings.protocol + uploader.settings.bucket + "." + "s3-" + uploader.settings.region + ".amazonaws.com";
+  // return uploader.settings.protocol + uploader.settings.bucket + "." + "s3-" + uploader.settings.region + ".amazonaws.com";
+  return uploader.settings.protocol + uploader.settings.bucket + "." + "s3.amazonaws.com";
 };
 
 bs3u.Uploader.prototype._log = function(msg, object) {
