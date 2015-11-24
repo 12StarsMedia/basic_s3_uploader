@@ -73,7 +73,7 @@ bs3u.Uploader.prototype._configureUploader = function(settings) {
     uploader.settings.protocol = "http://";
   }
   // The region where your bucket is located. This is needed for signature generation.
-  uploader.settings.region                  = settings.region || "your-region";
+  uploader.settings.region                  = settings.region || "us-east-1";
 
   // The host name is not required but can be explicitly set.
   uploader.settings.host                    = settings.host || uploader._defaultHost();
@@ -1393,8 +1393,8 @@ bs3u.Uploader.prototype._sha256 = function(value) {
 
 bs3u.Uploader.prototype._defaultHost = function() {
   var uploader = this;
-  // return uploader.settings.protocol + uploader.settings.bucket + "." + "s3-" + uploader.settings.region + ".amazonaws.com";
-  return uploader.settings.protocol + uploader.settings.bucket + "." + "s3.amazonaws.com";
+  var regionPrefix = uploader.settings.region === 'us-east-1' ? 's3' : 's3-' + uploder.settings.region;
+  return uploader.settings.protocol + uploader.settings.bucket + "." + regionPrefix + ".amazonaws.com";
 };
 
 bs3u.Uploader.prototype._log = function(msg, object) {
