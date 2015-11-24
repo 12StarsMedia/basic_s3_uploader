@@ -1491,7 +1491,7 @@ bs3u.Uploader.prototype._sha256 = function(value) {
 
 bs3u.Uploader.prototype._defaultHost = function() {
   var uploader = this;
-  var regionPrefix = uploader.settings.region === 'us-east-1' ? 's3' : 's3-' + uploder.settings.region;
+  var regionPrefix = uploader.settings.region === 'us-east-1' ? 's3' : 's3-' + uploader.settings.region;
   return uploader.settings.protocol + uploader.settings.bucket + "." + regionPrefix + ".amazonaws.com";
 };
 
