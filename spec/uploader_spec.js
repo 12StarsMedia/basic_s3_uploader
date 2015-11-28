@@ -180,8 +180,8 @@ describe("bs3u.Uploader", function() {
       expect(uploader.settings.chunkHeadersPath).toEqual("/get_chunk_headers");
       expect(uploader.settings.bucket).toEqual("your-bucket-name");
       expect(uploader.settings.ssl).toBeFalsy();
-      expect(uploader.settings.region).toEqual("your-region");
-      expect(uploader.settings.host).toEqual("http://" + uploader.settings.bucket + "." + "s3-" + uploader.settings.region + ".amazonaws.com");
+      expect(uploader.settings.region).toEqual("us-east-1");
+      expect(uploader.settings.host).toEqual("http://s3.amazonaws.com/" + uploader.settings.bucket);
       expect(uploader.settings.log).toBeFalsy();
       expect(uploader.settings.customHeaders).toEqual({});
       expect(uploader.settings.maxConcurrentChunks).toEqual(5);
@@ -1770,7 +1770,7 @@ describe("bs3u.Uploader", function() {
       uploader.settings.usingCloudFront = true;
       uploader._verifyAllChunksUploaded();
       var ajaxSettings = bs3u.Ajax.calls.argsFor(0)[0];
-      expect(ajaxSettings.url).toEqual('https://my-bucket.s3-us-east-1.amazonaws.com/my-upload-key');
+      expect(ajaxSettings.url).toEqual('https://s3.amazonaws.com/my-bucket/my-upload-key');
     });
 
     it("adds the XHR object to the _XHRs list", function() {
