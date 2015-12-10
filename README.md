@@ -1,5 +1,7 @@
 # BasicS3Uploader
 
+[![Build Status](https://travis-ci.org/12StarsMedia/basic_s3_uploader.svg?branch=master)](https://travis-ci.org/12StarsMedia/basic_s3_uploader)
+
 BasicS3Uploader is a Javascript uploader that uploads files to an S3 bucket directly
 from the client side. It was designed to be very generic and easily customizable.
 You simply configure it, give it a file, and then tell it to start uploading.
@@ -37,7 +39,7 @@ Specifically, it only requires these 4 APIs:
 Each of these APIs require authorization. BasicS3Uploader uses [AWS Signature Version 4](http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html) to authorize each request.
 
 In order to generate signatures in a secure manner, a server-side application is required. For more information
-about how to generate signatures or how to use the uploader, check out the documentation section. 
+about how to generate signatures or how to use the uploader, check out the documentation section.
 
 ## Requirements
 
@@ -103,7 +105,7 @@ First, here is the list of files and description of each file used for the sampl
     - sample_app/
       - app.rb: Simple Sinatra app that provides routes for both the front end and signature backend
       - s3_upload_request.rb: A simple class used to generate headers
-      - Gemfile 
+      - Gemfile
       - Gemfile.lock
       - public/
         - javascripts/
