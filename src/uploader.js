@@ -195,8 +195,8 @@ bs3u.Uploader.prototype._abortAllXHRs = function() {
 
   uploader._log("Aborting all XHR requests");
 
-  for (var index in uploader._XHRs) {
-    uploader._XHRs[index].abort();
+  for (var i = 0; i < uploader._XHRs.length; i++) {
+    uploader._XHRs[i].abort();
   }
 
   for (var chunk in uploader._chunkXHRs) {

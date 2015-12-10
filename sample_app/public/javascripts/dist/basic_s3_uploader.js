@@ -171,7 +171,7 @@ bs3u.Uploader.prototype._configureUploader = function(settings) {
     uploader.settings.protocol = "http://";
   }
   // The region where your bucket is located. This is needed for signature generation.
-  uploader.settings.region                  = settings.region || "your-region";
+  uploader.settings.region                  = settings.region || "us-east-1";
 
   // The host name is not required but can be explicitly set.
   uploader.settings.host                    = settings.host || uploader._defaultHost();
@@ -206,7 +206,7 @@ bs3u.Uploader.prototype._configureUploader = function(settings) {
   uploader.settings.useWebWorkers           = settings.useWebWorkers || false;
 
   // The following settings are not necessary unless you're using web workers:
-  
+
   // The path where the the worker file is located.
   uploader.settings.workerFilePath          = settings.workerFilePath || "/basic_s3_worker.js";
   // The path where this file is located. This is needed because the worker imports this file.
@@ -293,8 +293,8 @@ bs3u.Uploader.prototype._abortAllXHRs = function() {
 
   uploader._log("Aborting all XHR requests");
 
-  for (var index in uploader._XHRs) {
-    uploader._XHRs[index].abort();
+  for (var i = 0; i < uploader._XHRs.length; i++) {
+    uploader._XHRs[i].abort();
   }
 
   for (var chunk in uploader._chunkXHRs) {
@@ -1491,7 +1491,10 @@ bs3u.Uploader.prototype._sha256 = function(value) {
 
 bs3u.Uploader.prototype._defaultHost = function() {
   var uploader = this;
-  return uploader.settings.protocol + uploader.settings.bucket + "." + "s3-" + uploader.settings.region + ".amazonaws.com";
+  // https://s3.amazon.com/bucket
+  // https://s3-us-west-2.amazonaws.com/bucket
+  var regionPrefix = uploader.settings.region === 'us-east-1' ? 's3' : 's3-' + uploader.settings.region;
+  return uploader.settings.protocol + regionPrefix + ".amazonaws.com/" + uploader.settings.bucket;
 };
 
 bs3u.Uploader.prototype._log = function(msg, object) {
