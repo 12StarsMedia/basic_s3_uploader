@@ -1032,7 +1032,7 @@ describe("bs3u.Uploader", function() {
   });
 
   describe("_getChunkHeaders", function() {
-    var mockFile, mockSettings, uploader, mockFileReader, chunkNumber;
+    var mockFile, mockSettings, uploader, mockFileReader, chunkNumber, sliceFn;
 
     beforeEach(function() {
       mockFile = { name: "myfile", type: "video/quicktime", size: 1000 };
@@ -1057,6 +1057,7 @@ describe("bs3u.Uploader", function() {
       uploader.file = {
         slice: function(start, end) { return "sliced blob"; }
       };
+      sliceFn = function(start, end) { return "sliced blob"; };
       uploader._uploadId = "some-upload-id";
       mockFileReader = {
         result: "arrayBuffer",

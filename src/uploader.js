@@ -161,12 +161,6 @@ bs3u.Uploader.prototype.startUpload = function() {
     return;
   }
 
-  // Blob.slice is sometimes vendor prefixed
-  // https://developer.mozilla.org/en-US/docs/Web/API/Blob/slice
-  uploader.file.slice = uploader.file.slice ||
-                        uploader.file.webkitSlice ||
-                        uploader.file.mozSlice;
-
   uploader._validateFileIsReadable(function(valid) {
     if (valid) {
       uploader._createChunks();
@@ -427,10 +421,11 @@ bs3u.Uploader.prototype._getChunkHeaders = function(number, retries) {
   var uploader = this;
   var attempts = retries || 0;
   var chunk = uploader._chunks[number];
+  var sliceFn = arraySliceFn(uploader.file);
 
   uploader._log("Getting chunk " + number + " headers");
 
-  var body = uploader.file.slice(chunk.startRange, chunk.endRange);
+  var body = sliceFn.call(uploader.file, chunk.startRange, chunk.endRange);
   var fileReader = new FileReader();
 
   fileReader.onloadend = function() {
@@ -532,12 +527,13 @@ bs3u.Uploader.prototype._uploadSpotAvailable = function() {
 bs3u.Uploader.prototype._uploadChunk = function(number, retries) {
   var uploader = this;
   var attempts = retries || 0;
+  var sliceFn = arraySliceFn(uploader.file);
 
   var chunk = uploader._chunks[number];
 
   if (!chunk.uploading) { return; }
 
-  var body = uploader.file.slice(chunk.startRange, chunk.endRange);
+  var body = sliceFn.call(uploader.file, chunk.startRange, chunk.endRange);
 
   uploader._log("Starting the XHR upload for chunk " + number);
 
@@ -1351,7 +1347,8 @@ bs3u.Uploader.prototype._notifyUploadCancelled = function() {
 bs3u.Uploader.prototype._validateFileIsReadable = function(callback) {
   var uploader = this;
   var file = uploader.file;
-  var blob = file.slice(0, 1024);
+  var sliceFn = arraySliceFn(file);
+  var blob = sliceFn.call(file, 0, 1024);
   var fr = new FileReader();
 
   fr.onloadend = function() {
@@ -1441,6 +1438,11 @@ bs3u.Uploader.prototype.errors = {
 var BasicS3Uploader = bs3u.Uploader;
 
 // #UTILITIES
+function arraySliceFn(obj) {
+  var fn = obj.slice || obj.webkitSlice || obj.mozSlice;
+  return typeof fn === 'function' ? fn : null;
+}
+
 function fixedEncodeURI(str) {
   return encodeURI(str).replace(/[!'()*]/g, function(c) {
     return '%' + c.charCodeAt(0).toString(16);
