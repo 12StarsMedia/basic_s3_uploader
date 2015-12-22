@@ -158,6 +158,12 @@ bs3u.Uploader.prototype.startUpload = function() {
     return;
   }
 
+  // Blob.slice is sometimes vendor prefixed
+  // https://developer.mozilla.org/en-US/docs/Web/API/Blob/slice
+  uploader.file.slice = uploader.file.slice ||
+                        uploader.file.webkitSlice ||
+                        uploader.file.mozSlice;
+
   uploader._validateFileIsReadable(function(valid) {
     if (valid) {
       uploader._createChunks();
