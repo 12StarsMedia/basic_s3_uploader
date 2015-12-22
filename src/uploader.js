@@ -421,7 +421,7 @@ bs3u.Uploader.prototype._getChunkHeaders = function(number, retries) {
 
   uploader._log("Getting chunk " + number + " headers");
 
-  var body = uploader._arraySliceFn(chunk.startRange, chunk.endRange);
+  var body = uploader.file.slice(chunk.startRange, chunk.endRange);
   var fileReader = new FileReader();
 
   fileReader.onloadend = function() {
@@ -528,7 +528,7 @@ bs3u.Uploader.prototype._uploadChunk = function(number, retries) {
 
   if (!chunk.uploading) { return; }
 
-  var body = uploader._arraySliceFn(chunk.startRange, chunk.endRange);
+  var body = uploader.file.slice(chunk.startRange, chunk.endRange);
 
   uploader._log("Starting the XHR upload for chunk " + number);
 
@@ -1342,7 +1342,7 @@ bs3u.Uploader.prototype._notifyUploadCancelled = function() {
 bs3u.Uploader.prototype._validateFileIsReadable = function(callback) {
   var uploader = this;
   var file = uploader.file;
-  var blob = uploader._arraySliceFn(0, 1024);
+  var blob = file.slice(0, 1024);
   var fr = new FileReader();
 
   fr.onloadend = function() {
@@ -1385,13 +1385,6 @@ bs3u.Uploader.prototype._encryptText = function(value, success, error) {
   } else {
     success(uploader._sha256(value));
   }
-};
-
-// Check for Blob.slice support and use correct method
-// See https://github.com/aws/aws-sdk-js/commit/34b24a2ef3ee3847580257413d5c3f1439d1ffe0
-bs3u.Uploader.prototype._arraySliceFn = function(obj) {
-  var fn = obj.slick || obj.webkitSlice || obj.mozSlice;
-  return typeof fn === 'function' ? fn : null;
 };
 
 bs3u.Uploader.prototype._sha256 = function(value) {

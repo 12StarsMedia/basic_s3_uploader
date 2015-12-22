@@ -1,5 +1,5 @@
 {
-  "name": "scotty-js",
+  "name": "basic_s3_uploader",
   "description": "A basic S3 uploader",
   "version": "0.0.5",
   "dependencies": {
