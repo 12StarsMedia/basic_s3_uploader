@@ -200,6 +200,9 @@ bs3u.Uploader.prototype._configureUploader = function(settings) {
   // The key for this upload.
   uploader.settings.key = settings.key || defaultKey;
 
+  // Encode URI to comply with RFC3986
+  uploader.settings.key = fixedEncodeURI(uploader.settings.key);
+
   // If set to true, any SHA256 encryption will be done through web workers. This
   // will greatly increase performance when requesting headers for each chunk
   // of the file.
@@ -1534,3 +1537,10 @@ bs3u.Uploader.prototype.errors = {
 
 // For backwards compatibility
 var BasicS3Uploader = bs3u.Uploader;
+
+// #UTILITIES
+function fixedEncodeURI(str) {
+  return encodeURI(str).replace(/[!'()*]/g, function(c) {
+    return '%' + c.charCodeAt(0).toString(16);
+  });
+}
