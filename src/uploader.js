@@ -421,11 +421,11 @@ bs3u.Uploader.prototype._getChunkHeaders = function(number, retries) {
   var uploader = this;
   var attempts = retries || 0;
   var chunk = uploader._chunks[number];
-  var sliceFn = arraySliceFn(uploader.file);
+  var sliceFn = uploader._arraySliceFn(uploader.file);
 
   uploader._log("Getting chunk " + number + " headers");
 
-  var body = sliceFn.call(uploader.file, chunk.startRange, chunk.endRange);
+  var body = uploader.file[sliceFn](chunk.startRange, chunk.endRange);
   var fileReader = new FileReader();
 
   fileReader.onloadend = function() {
@@ -527,13 +527,13 @@ bs3u.Uploader.prototype._uploadSpotAvailable = function() {
 bs3u.Uploader.prototype._uploadChunk = function(number, retries) {
   var uploader = this;
   var attempts = retries || 0;
-  var sliceFn = arraySliceFn(uploader.file);
+  var sliceFn = uploader._arraySliceFn(uploader.file);
 
   var chunk = uploader._chunks[number];
 
   if (!chunk.uploading) { return; }
 
-  var body = sliceFn.call(uploader.file, chunk.startRange, chunk.endRange);
+  var body = uploader.file[sliceFn](chunk.startRange, chunk.endRange);
 
   uploader._log("Starting the XHR upload for chunk " + number);
 
@@ -1346,9 +1346,8 @@ bs3u.Uploader.prototype._notifyUploadCancelled = function() {
 // of the check.
 bs3u.Uploader.prototype._validateFileIsReadable = function(callback) {
   var uploader = this;
-  var file = uploader.file;
-  var sliceFn = arraySliceFn(file);
-  var blob = sliceFn.call(file, 0, 1024);
+  var sliceFn = uploader._arraySliceFn(uploader.file);
+  var blob = uploader.file[sliceFn](0, 1024);
   var fr = new FileReader();
 
   fr.onloadend = function() {
@@ -1434,15 +1433,15 @@ bs3u.Uploader.prototype.errors = {
   10: "Max number of retries have been met. Unable to get complete headers!"
 };
 
+bs3u.Uploader.prototype._arraySliceFn = function(fileObj) {
+  return (fileObj.slice ? 'slice' : (fileObj.mozSlice ? 'mozSlice' : (fileObj.webkitSlice ? 'webkitSlice' : 'slice')));
+};
+
 // For backwards compatibility
 var BasicS3Uploader = bs3u.Uploader;
 
-// #UTILITIES
-function arraySliceFn(obj) {
-  var fn = obj.slice || obj.webkitSlice || obj.mozSlice;
-  return typeof fn === 'function' ? fn : null;
-}
 
+// #UTILITIES
 function encodeKey(str) {
   var splitKey = str.split('/');
   var lastIndex = splitKey.length - 1;

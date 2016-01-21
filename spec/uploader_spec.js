@@ -1057,7 +1057,7 @@ describe("bs3u.Uploader", function() {
       uploader.file = {
         slice: function(start, end) { return "sliced blob"; }
       };
-      sliceFn = function(start, end) { return "sliced blob"; };
+      sliceFn = function(fileObj) { return "slice"; };
       uploader._uploadId = "some-upload-id";
       mockFileReader = {
         result: "arrayBuffer",
