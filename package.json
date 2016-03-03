@@ -1,0 +1,31 @@
+{
+  "name": "basic_s3_uploader",
+  "description": "A basic S3 uploader",
+  "version": "0.0.9",
+  "dependencies": {
+    "grunt": "~0.4.4"
+  },
+  "devDependencies": {
+    "karma": "~0.12.3",
+    "grunt-karma": "~0.8.2",
+    "karma-jasmine": "~0.2.0",
+    "karma-phantomjs-launcher": "~0.1.4",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-concat": "~0.4.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JAndritsch/basic_s3_uploader.git"
+  },
+  "author": "Joel Andritsch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JAndritsch/basic_s3_uploader/issues"
+  },
+  "homepage": "https://github.com/JAndritsch/basic_s3_uploader"
+}
