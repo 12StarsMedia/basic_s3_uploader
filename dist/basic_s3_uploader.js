@@ -53,8 +53,8 @@ bs3u.Ajax.prototype.buildURL = function(url, params) {
         url += "?";
       }
 
-      url += encodeURIComponent(name) + "=";
-      url += encodeURIComponent(params[name]);
+      url += fixedEncodeURIComponent(name) + "=";
+      url += fixedEncodeURIComponent(params[name]);
     }
   }
   return url;
@@ -73,7 +73,7 @@ bs3u.Ajax.prototype.open = function() {
   var params = this.config.params || {};
 
   url = this.buildURL(url, params);
-  
+
   this.xhr.open(method, url);
 };
 
@@ -95,6 +95,12 @@ bs3u.Ajax.prototype.send = function(body) {
 bs3u.Ajax.prototype.abort = function() {
   this.xhr.abort();
 };
+
+function fixedEncodeURIComponent (str) {
+  return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
+    return '%' + c.charCodeAt(0).toString(16);
+  });
+}
 
 /*
 * Copyright © 2014 Joel Andritsch <joel.andritsch@gmail.com>
@@ -201,7 +207,7 @@ bs3u.Uploader.prototype._configureUploader = function(settings) {
   uploader.settings.key = settings.key || defaultKey;
 
   // Encode URI to comply with RFC3986
-  uploader.settings.key = encodeKey(uploader.settings.key);
+  uploader.settings.key = uploader.settings.key;
 
   // If set to true, any SHA256 encryption will be done through web workers. This
   // will greatly increase performance when requesting headers for each chunk
@@ -1537,18 +1543,3 @@ bs3u.Uploader.prototype._arraySliceFn = function(fileObj) {
 
 // For backwards compatibility
 var BasicS3Uploader = bs3u.Uploader;
-
-
-// #UTILITIES
-function encodeKey(str) {
-  var splitKey = str.split('/');
-  var lastIndex = splitKey.length - 1;
-  splitKey[lastIndex] = fixedEncodeURIComponent(splitKey[lastIndex]);
-  return splitKey.join('/');
-}
-
-function fixedEncodeURIComponent (str) {
-  return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
-    return '%' + c.charCodeAt(0).toString(16);
-  });
-}

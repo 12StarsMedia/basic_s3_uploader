@@ -42,8 +42,8 @@ bs3u.Ajax.prototype.buildURL = function(url, params) {
         url += "?";
       }
 
-      url += encodeURIComponent(name) + "=";
-      url += encodeURIComponent(params[name]);
+      url += fixedEncodeURIComponent(name) + "=";
+      url += fixedEncodeURIComponent(params[name]);
     }
   }
   return url;
@@ -62,7 +62,7 @@ bs3u.Ajax.prototype.open = function() {
   var params = this.config.params || {};
 
   url = this.buildURL(url, params);
-  
+
   this.xhr.open(method, url);
 };
 
@@ -84,3 +84,9 @@ bs3u.Ajax.prototype.send = function(body) {
 bs3u.Ajax.prototype.abort = function() {
   this.xhr.abort();
 };
+
+function fixedEncodeURIComponent (str) {
+  return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
+    return '%' + c.charCodeAt(0).toString(16);
+  });
+}
