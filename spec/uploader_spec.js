@@ -601,7 +601,7 @@ describe("bs3u.Uploader", function() {
       ajaxSettings = bs3u.Ajax.calls.argsFor(0)[0];
 
       expect(ajaxSettings.url).toEqual(mockSettings.signatureBackend + mockSettings.initHeadersPath);
-      expect(ajaxSettings.method).toEqual("GET");
+      expect(ajaxSettings.method).toEqual("POST");
       expect(ajaxSettings.headers).toEqual(mockSettings.customHeaders);
       expect(ajaxSettings.params.key).toEqual(mockSettings.key);
       expect(ajaxSettings.params.content_type).toEqual(mockSettings.contentType);
@@ -1081,7 +1081,7 @@ describe("bs3u.Uploader", function() {
         ajaxSettings = bs3u.Ajax.calls.argsFor(0)[0];
 
         expect(ajaxSettings.url).toEqual(mockSettings.signatureBackend + mockSettings.chunkHeadersPath);
-        expect(ajaxSettings.method).toEqual("GET");
+        expect(ajaxSettings.method).toEqual("POST");
         expect(ajaxSettings.headers).toEqual(mockSettings.customHeaders);
         expect(ajaxSettings.params.key).toEqual(mockSettings.key);
         expect(ajaxSettings.params.content_type).toEqual(mockSettings.contentType);
@@ -1551,7 +1551,7 @@ describe("bs3u.Uploader", function() {
       ajaxSettings = bs3u.Ajax.calls.argsFor(0)[0];
 
       expect(ajaxSettings.url).toEqual(mockSettings.signatureBackend + mockSettings.listHeadersPath);
-      expect(ajaxSettings.method).toEqual("GET");
+      expect(ajaxSettings.method).toEqual("POST");
       expect(ajaxSettings.headers).toEqual(mockSettings.customHeaders);
       expect(ajaxSettings.params.key).toEqual(mockSettings.key);
       expect(ajaxSettings.params.content_type).toEqual(mockSettings.contentType);
@@ -1761,7 +1761,7 @@ describe("bs3u.Uploader", function() {
       uploader._verifyAllChunksUploaded();
       var ajaxSettings = bs3u.Ajax.calls.argsFor(0)[0];
       expect(ajaxSettings.url).toEqual('some-host/my-upload-key');
-      expect(ajaxSettings.method).toEqual('GET');
+      expect(ajaxSettings.method).toEqual('POST');
       expect(ajaxSettings.params.uploadId).toEqual('upload-id');
       expect(ajaxSettings.headers).toEqual(uploader._listHeaders);
     });
@@ -2093,7 +2093,7 @@ describe("bs3u.Uploader", function() {
       ajaxSettings = bs3u.Ajax.calls.argsFor(0)[0];
 
       expect(ajaxSettings.url).toEqual(mockSettings.signatureBackend + mockSettings.completeHeadersPath);
-      expect(ajaxSettings.method).toEqual("GET");
+      expect(ajaxSettings.method).toEqual("POST");
       expect(ajaxSettings.headers).toEqual(mockSettings.customHeaders);
       expect(ajaxSettings.params.key).toEqual(mockSettings.key);
       expect(ajaxSettings.params.content_type).toEqual(mockSettings.contentType);
