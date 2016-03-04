@@ -103,7 +103,7 @@ bs3u.Uploader.prototype._configureUploader = function(settings) {
   uploader.settings.key = settings.key || defaultKey;
 
   // Encode URI to comply with RFC3986
-  uploader.settings.key = encodeKey(uploader.settings.key);
+  uploader.settings.key = uploader.settings.key;
 
   // If set to true, any SHA256 encryption will be done through web workers. This
   // will greatly increase performance when requesting headers for each chunk
@@ -261,7 +261,7 @@ bs3u.Uploader.prototype._getInitHeaders = function(retries) {
   var success = function(encrypted) {
     var ajax = new bs3u.Ajax({
       url: uploader.settings.signatureBackend + uploader.settings.initHeadersPath,
-      method: "GET",
+      method: "POST",
       params: {
         key: uploader.settings.key,
         content_type: uploader.settings.contentType,
@@ -440,7 +440,7 @@ bs3u.Uploader.prototype._getChunkHeaders = function(number, retries) {
 
       var ajax = new bs3u.Ajax({
         url: uploader.settings.signatureBackend + uploader.settings.chunkHeadersPath,
-        method: "GET",
+        method: "POST",
         params: {
           key: uploader.settings.key,
           content_type: uploader.settings.contentType,
@@ -638,7 +638,7 @@ bs3u.Uploader.prototype._getListHeaders = function(retries) {
   var success = function(encrypted) {
     var ajax = new bs3u.Ajax({
       url: uploader.settings.signatureBackend + uploader.settings.listHeadersPath,
-      method: "GET",
+      method: "POST",
       params: {
         key: uploader.settings.key,
         content_type: uploader.settings.contentType,
@@ -728,7 +728,7 @@ bs3u.Uploader.prototype._verifyAllChunksUploaded = function(retries) {
 
   var ajax = new bs3u.Ajax({
     url: host + "/" + uploader.settings.key,
-    method: "GET",
+    method: "POST",
     params: {
       uploadId: uploader._uploadId,
     },
@@ -818,7 +818,7 @@ bs3u.Uploader.prototype._getCompleteHeaders = function(retries) {
   var success = function(encrypted) {
     var ajax = new bs3u.Ajax({
       url: uploader.settings.signatureBackend + uploader.settings.completeHeadersPath,
-      method: "GET",
+      method: "POST",
       params: {
         key: uploader.settings.key,
         content_type: uploader.settings.contentType,
